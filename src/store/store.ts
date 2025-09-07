@@ -7,10 +7,11 @@ interface QueueListIncomingState {
   queueListIncoming: Aircraft[];
   addIncomingAircraft: (aircraft: Aircraft) => void;
   removeIncomingAircraft: (aircraft: Aircraft) => void;
+  getOneIncomingAircraft: (id: String) => Aircraft | undefined;
 }
 
 // Создание стора
-const useQueueListIncomingInternal = create<QueueListIncomingState>((set) => ({
+const useQueueListIncomingInternal = create<QueueListIncomingState>((set, get) => ({
   queueListIncoming: [],
   addIncomingAircraft: (aircraft: Aircraft) =>
     set((state) => ({ queueListIncoming: [...state.queueListIncoming, aircraft] })),
@@ -18,6 +19,9 @@ const useQueueListIncomingInternal = create<QueueListIncomingState>((set) => ({
     set((state) => ({
       queueListIncoming: state.queueListIncoming.filter((item) => item !== aircraft),
     })),
+  getOneIncomingAircraft: (id: String) => {
+      return get().queueListIncoming.find((aircraft) => aircraft.name === id);
+    }
 }));
 
 // Экспорт хука для реактных компонентов

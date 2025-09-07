@@ -31,10 +31,12 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import FlowController from "@/core/game/FlowController";
 import { useQueueListIncoming } from "@/store/store";
+import Popup from "../popup";
+import InfoAircraft from "../airshift/InfoAircraft";
 
 // Тип для элементов списка
 interface Item {
-  id: number;
+  id: string;
   value: string;
 }
 
@@ -67,7 +69,7 @@ function DroppableColumn({ id, children }: { id: string; children: React.ReactNo
 }
 
 // Компонент для сортируемого элемента
-function SortableItem({ id, value }: { id: number; value: string }) {
+function SortableItem({ id, value, infoAirshift }: { id: string; value: string; infoAirshift: (id: string) => void; }) {
   const {
     attributes,
     listeners,
@@ -83,6 +85,8 @@ function SortableItem({ id, value }: { id: number; value: string }) {
     opacity: isDragging ? 0.5 : 1
   };
 
+  const OpenButton = <Text>{value}</Text>
+  const Content = infoAirshift(id)
   return (
     <Box
       ref={setNodeRef}
@@ -101,13 +105,13 @@ function SortableItem({ id, value }: { id: number; value: string }) {
       zIndex={1}
       position="relative"
     >
-      <Text>{value}</Text>
+      <Popup OpenButton={OpenButton} Content={Content}/>
     </Box>
   );
 }
 
 // Overlay элемент для перетаскивания
-function ItemOverlay({ id, value }: { id: number; value: string }) {
+function ItemOverlay({ id, value }: { id: number; value: string; }) {
   return (
     <Box
       width={"100%"}
@@ -126,7 +130,7 @@ function ItemOverlay({ id, value }: { id: number; value: string }) {
 }
 
 // Компонент для сортируемой колонки
-function SortableColumn({ name, items }: { name: string; items: Item[] }) {
+function SortableColumn({ name, items, infoAirshift }: { name: string; items: Item[]; infoAirshift: (id: string) => void; }) {
   return (
     <DroppableColumn id={name}>
       <VStack w={"100%"} align="stretch" spacing={3} minH="200px">
@@ -145,7 +149,8 @@ function SortableColumn({ name, items }: { name: string; items: Item[] }) {
                     <SortableItem 
                       key={item.id} 
                       id={item.id} 
-                      value={item.value} 
+                      value={item.value}
+                      infoAirshift={infoAirshift}
                     />
                   )}
                 </For>
@@ -174,7 +179,7 @@ function SortableColumn({ name, items }: { name: string; items: Item[] }) {
 }
 
 export default function Incoming() {
-  const { queueListIncoming } = useQueueListIncoming();
+  const { queueListIncoming, getOneIncomingAircraft } = useQueueListIncoming();
 
   // Преобразование Aircraft → Item
   const newColumnItems = queueListIncoming.map((aircraft) => ({
@@ -184,9 +189,7 @@ export default function Incoming() {
 
   const [items, setItems] = useState<Columns>({
     new: newColumnItems,
-    landing: [
-      { id: 3, value: "H557HH" },
-    ],
+    landing: [],
     waiting: [],
     done: [],
   });
@@ -216,6 +219,18 @@ export default function Incoming() {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  
+  function infoAirshift(id: string) {
+    const airshftInfo = getOneIncomingAircraft(id);
+    if (airshftInfo) {
+      console.log(airshftInfo); // Обработка данных
+    } else {
+      console.warn(`Самолет с ID ${id} не найден`);
+    }
+    return <InfoAircraft aircraftInfo={airshftInfo}/>;
+  }
+
 
   function handleDragStart(event: DragStartEvent) {
     const { active } = event;
@@ -304,6 +319,7 @@ export default function Incoming() {
                 <SortableColumn
                   name={name}
                   items={columnItems}
+                  infoAirshift={infoAirshift}
                 />
               </Box>
             )}
@@ -312,7 +328,7 @@ export default function Incoming() {
         
         <DragOverlay>
           {activeItem ? (
-            <ItemOverlay id={activeItem.id} value={activeItem.value} />
+            <ItemOverlay id={activeItem.id} value={activeItem.value}/>
           ) : null}
         </DragOverlay>
       </DndContext>

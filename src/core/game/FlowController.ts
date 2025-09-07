@@ -8,11 +8,9 @@ class FlowController {
   #quaueListLanding: Aircraft[] = []
   #queueListDeparture: Aircraft[] = []
   constructor() {
-    console.log(this.#queueListIncoming)
   }
 
   initSystem() {
-    console.log('test')
     this.#addToQueueListIncoming()
   }
 
@@ -33,7 +31,6 @@ class FlowController {
         this.#queueListIncoming.push(newAircraft)
         useQueueListIncomingInternal.getState().addIncomingAircraft(newAircraft)
       }
-      console.log(this.#queueListIncoming)
       this.#addToQueueListIncoming()
     }, timeout)
   }
