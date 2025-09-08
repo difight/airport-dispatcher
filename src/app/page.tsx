@@ -1,4 +1,4 @@
-import Incoming from "@/components/monitors/incoming";
+import Incoming from "@/components/monitors/incoming/";
 
 export default function Home() {
   return (
