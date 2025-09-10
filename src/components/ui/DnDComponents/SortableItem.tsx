@@ -1,16 +1,16 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Box, Text } from '@chakra-ui/react';
-import { Popup } from '@/components/popup';
-import { InfoAircraft } from '@/components/airshift';
+import { Box } from '@chakra-ui/react';
+import Popup from '../popup';
 
 interface Props {
   id: string;
   value: string;
   infoAirshift: (id: string) => JSX.Element;
+  infoAirshiftRow: (id: string) => JSX.Element;
 }
 
-export function SortableItem({ id, value, infoAirshift }: Props) {
+export function SortableItem({ id, value, infoAirshift, infoAirshiftRow }: Props) {
   const {
     attributes,
     listeners,
@@ -45,7 +45,7 @@ export function SortableItem({ id, value, infoAirshift }: Props) {
       position="relative"
     >
       <Popup 
-        OpenButton={<Text>{value}</Text>} 
+        OpenButton={infoAirshiftRow(id)} 
         Content={infoAirshift(id)} 
       />
     </Box>

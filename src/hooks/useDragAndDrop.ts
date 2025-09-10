@@ -15,6 +15,11 @@ export function useDragAndDrop({ initialItems, onItemsChange }: UseDragAndDropPr
     setActiveId(active.id);
   };
 
+  const setInitialItems = (newItems: Record<string, any[]>) => {
+    setItems(newItems);
+    onItemsChange?.(newItems);
+  };
+
   const handleDragEnd = ({ active, over }: { active: { id: string }; over: { id: string | null } }) => {
     if (!over) return;
 
@@ -58,5 +63,5 @@ export function useDragAndDrop({ initialItems, onItemsChange }: UseDragAndDropPr
     onItemsChange?.(items);
   };
 
-  return { items, setItems, activeId, handleDragStart, handleDragEnd };
+  return { items, setItems, activeId, handleDragStart, handleDragEnd, setInitialItems };
 }

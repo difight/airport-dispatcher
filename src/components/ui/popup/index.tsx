@@ -1,10 +1,16 @@
-import { Dialog, Portal, CloseButton } from "@chakra-ui/react";
+import { Dialog, Portal, CloseButton, Text, Box } from "@chakra-ui/react";
 import React from "react";
 export default function Popup({OpenButton, Content}: Readonly<{OpenButton:React.ReactNode, Content: React.ReactNode}>) {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        {OpenButton}
+        <Box 
+            p="4"
+            borderWidth="1px"
+            borderColor="border.disabled"
+            color="fg.disabled">
+          {OpenButton}
+        </Box>
       </Dialog.Trigger>
       <Portal>
         <Dialog.Backdrop/>
