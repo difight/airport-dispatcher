@@ -1,6 +1,7 @@
 import Aircraft from "./aircrafts/Aircraft"
 import GeneratePlane from "./aircrafts/GeneratePlane"
 import useQueueListIncomingInternal from "@/store/store"
+import FlightScheduler from "./FlightScheduler"
 
 class FlowController {
   readonly #MAX_QUEUE_SIZE = 10
@@ -8,6 +9,7 @@ class FlowController {
   #quaueListLanding: Aircraft[] = []
   #queueListDeparture: Aircraft[] = []
   constructor() {
+    FlightScheduler.start()
   }
 
   initSystem() {

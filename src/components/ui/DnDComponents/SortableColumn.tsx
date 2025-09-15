@@ -1,14 +1,15 @@
 import { DroppableColumn } from "@/components/ui/DnDComponents/DroppableColumn";
-import { ScrollArea, VStack, Text, Box } from "@chakra-ui/react";
+import { ScrollArea, VStack, Text, Box, StepsStatusProps } from "@chakra-ui/react";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { For } from "@chakra-ui/react";
 import { SortableItem } from "@/components/ui/DnDComponents/SortableItem";
+import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   name: string;
   items: Array<{ id: string; value: string }>;
   infoAirshift: (id: string) => JSX.Element;
-  infoAirshiftRow: (id: string) => JSX.Element;
+  infoAirshiftRow: (id: string, setAlert: Dispatch<SetStateAction<boolean>>) => JSX.Element;
 }
 
 export function SortableColumn({ name, items, infoAirshift, infoAirshiftRow }: Props) {

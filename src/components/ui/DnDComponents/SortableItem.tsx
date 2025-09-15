@@ -2,12 +2,13 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Box } from '@chakra-ui/react';
 import Popup from '../popup';
+import {useState, Dispatch, SetStateAction} from 'react';
 
 interface Props {
   id: string;
   value: string;
   infoAirshift: (id: string) => JSX.Element;
-  infoAirshiftRow: (id: string) => JSX.Element;
+  infoAirshiftRow: (id: string, setAlert: Dispatch<SetStateAction<boolean>>) => JSX.Element;
 }
 
 export function SortableItem({ id, value, infoAirshift, infoAirshiftRow }: Props) {
@@ -26,6 +27,8 @@ export function SortableItem({ id, value, infoAirshift, infoAirshiftRow }: Props
     opacity: isDragging ? 0.5 : 1
   };
 
+  const [alert, setAlert] = useState(false);
+
   return (
     <Box
       ref={setNodeRef}
@@ -36,16 +39,16 @@ export function SortableItem({ id, value, infoAirshift, infoAirshiftRow }: Props
       textAlign="center"
       borderRadius="md"
       borderWidth="1px"
-      borderColor="border.info"
-      backgroundColor="bg.info"
+      borderColor={alert ? "border.error" : "border.info"}
+      backgroundColor={alert ? "bg.error" : "bg.info"}
       cursor="grab"
       _active={{ cursor: "grabbing" }}
       mb={2}
       zIndex={1}
       position="relative"
     >
-      <Popup 
-        OpenButton={infoAirshiftRow(id)} 
+      <Popup
+        OpenButton={infoAirshiftRow(id, setAlert)} 
         Content={infoAirshift(id)} 
       />
     </Box>

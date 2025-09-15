@@ -2,7 +2,7 @@ import Aircraft, { AircraftSize, AircraftType} from "./Aircraft";
 
 class PassangerPlane extends Aircraft {
   constructor() {
-    super(AircraftType.PASSENGER,AircraftSize.MEDIUM, 100, 1000, 300);
+    super(AircraftType.PASSENGER,AircraftSize.MEDIUM, 10, 3000, 300, 2000);
   }
 }
 

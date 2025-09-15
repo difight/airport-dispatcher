@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect } from "react";
-import { HStack, Box } from "@chakra-ui/react";
+import { SetStateAction, useEffect } from "react";
+import { HStack, Box, RadioCardItemTextProps } from "@chakra-ui/react";
 import Computer from "@/components/computers";
 import { DndContext, closestCenter, useSensor, PointerSensor, KeyboardSensor, useSensors, DragOverlay } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
@@ -63,8 +63,8 @@ export default function Incoming() {
     return <InfoAircraft aircraftInfo={aircraftInfo} />;
   };
 
-  const infoAircraftRow = (id: string) => {
-    return <InfoAircraftRow id = {id}/>;
+  const infoAircraftRow = (id: string, setAlert:React.Dispatch<SetStateAction<boolean>>) => {
+    return <InfoAircraftRow id = {id} setAlert={setAlert}/>;
   }
 
   return (
