@@ -12,6 +12,7 @@ import InfoAircraft from "@/components/ui/airshift/InfoAircraft";
 import InfoAircraftRow from "@/components/ui/airshift/InfoAircraftRow";
 import ItemOverlay from "@/components/ui/DnDComponents/ItemOverlay";
 import FlowController from "@/core/game/FlowController";
+import { DragStartEvent, DragEndEvent } from "@dnd-kit/core/dist/types";
 
 export default function Incoming() {
   const { queueListIncoming, getOneIncomingAircraft } = useQueueListIncoming();
@@ -67,13 +68,23 @@ export default function Incoming() {
     return <InfoAircraftRow id = {id} setAlert={setAlert}/>;
   }
 
+  const dragStart = (prop: DragStartEvent) => {
+    //console.log(prop)
+    handleDragStart(prop)
+  }
+
+  const dragEnd = (prop: DragEndEvent) => {
+    console.log(prop)
+    handleDragEnd(prop)
+  }
+
   return (
     <Computer>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
+        onDragStart={dragStart}
+        onDragEnd={dragEnd}
       >
         <HStack width="100%" align="start" spacing={4}>
           {Object.entries(items).map(([name, columnItems]) => (
